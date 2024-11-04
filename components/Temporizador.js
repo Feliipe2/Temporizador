@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import SelectorTiempo from './SelectorTiempo'; // Asegúrate de que este componente esté bien implementado
+import { Audio } from 'expo-av'; // Importa Audio de expo-av
+import SelectorTiempo from './SelectorTiempo'; // Importa SelectorTiempo
 
 const Temporizador = () => {
   const [horas, setHoras] = useState(0);
@@ -15,6 +16,13 @@ const Temporizador = () => {
     return () => clearInterval(intervaloRef.current);
   }, []);
 
+  const playSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require('../aud/alarma.mp3')
+    );
+    await sound.playAsync();
+  };
+
   const iniciarTemporizador = () => {
     if (enMarcha) return; // Evitar múltiples intervalos
 
@@ -28,6 +36,7 @@ const Temporizador = () => {
         if (prevTotalSegundos <= 0) {
           clearInterval(intervaloRef.current); // Detener al llegar a 00:00:00
           setEnMarcha(false);
+          playSound(); // Play the sound
           return 0; // Asegura que el total sea 0
         }
         return prevTotalSegundos - 1;
