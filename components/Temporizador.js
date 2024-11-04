@@ -36,7 +36,7 @@ const Temporizador = () => {
         if (prevTotalSegundos <= 0) {
           clearInterval(intervaloRef.current); // Detener al llegar a 00:00:00
           setEnMarcha(false);
-          playSound(); // Play the sound
+          playSound(); // Reproducir alarma
           return 0; // Asegura que el total sea 0
         }
         return prevTotalSegundos - 1;
